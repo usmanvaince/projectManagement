@@ -19,7 +19,7 @@ class ApiController extends Controller
         return $this->model->create();
     }
     function store(){
-        return $this->model->update();
+        return $this->model->updateProject();
     }
 
     function get() {

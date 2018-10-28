@@ -34,7 +34,7 @@
             <b-modal id="createProject" size="lg" ref="projectModel" title="Create Project">
 
                 <b-form id="projectForm" @submit="onSubmit" @reset="onReset" v-if="show">
-                   <input type="hidden" name="id" v-model="form.id" />
+                   <input v-if="form.id !=0 " type="hidden" name="id" v-model="form.id" />
                     <b-row>
 
                         <b-col sm="6">
@@ -129,7 +129,7 @@
 
                         <b-col sm="6">
                             <b-form-group label="Project Status">
-                                <b-form-radio-group name="status" v-model="form.project_status" >
+                                <b-form-radio-group name="project_status" v-model="form.project_status" >
                                     <b-form-radio value="active">Active</b-form-radio>
                                     <b-form-radio value="inactive">InActive</b-form-radio>
                                 </b-form-radio-group>
@@ -163,6 +163,7 @@
                              {key: 'id',label: 'Actions'  },
                          ],
                 form: {
+                    id: 0,
                     project_name: '',
                     project_description: '',
                     client_name: '',
@@ -202,7 +203,7 @@
                 let self = this;
                 let form = document.getElementById('projectForm');
                 const form_data = new FormData(form);
-                const url = this.form.id !== 0 ? '/api/project_status' : '/api/create_project';
+                const url = this.form.id !== 0 ? '/api/update_project' : '/api/create_project';
                 axios.post(url, form_data).then(function (response) {
                     self.$toaster.success(response.data.message);
                     self.$refs.table.refresh();

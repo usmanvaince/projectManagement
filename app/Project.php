@@ -14,13 +14,14 @@ class Project extends Model
         return $this->get();
     }
     function create() {
-         if( Project::Create(request()->all()) ) {
+         if( Project::updateOrCreate(request()->all()) ) {
              return response()->json(['message' => 'Project is created successfully'], 200);
          }
     }
 
     function updateProject(){
-        if( Project::Update(request()->all()) ) {
+        $project = Project::find(request('id'));
+        if( $project->update($this->getData()) ) {
             return response()->json(['message' => 'Project is updated successfully'], 200);
         }
     }
@@ -38,6 +39,20 @@ class Project extends Model
             return response()->json(['message' => 'Project Name should be unique'], 200);
         }
         return response()->json(['message' => 'Project Name is valid'], 200);
+    }
+
+    private function getData(){
+        return $data =[
+                  'project_name' => request('project_name'),
+                  'client_name' => request('client_name'),
+                  'manager_name' => request('manager_name'),
+                  'project_status' => request('project_status'),
+                  'start_date' => request('start_date'),
+                  'end_date' => request('end_date'),
+                  'category' => request('category'),
+                  'budget' => request('budget'),
+                  'project_description' => request('project_description')
+        ];
     }
 
 }

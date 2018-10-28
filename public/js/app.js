@@ -50966,6 +50966,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         return {
             fields: [{ key: 'project_name', label: 'Project Title' }, { key: 'client_name', label: 'Client Name' }, { key: 'budget', label: 'Budget' }, { key: 'category', label: 'Category' }, { key: 'start_date', label: 'Start Date' }, { key: 'end_date', label: 'End Date' }, { key: 'id', label: 'Actions' }],
             form: {
+                id: 0,
                 project_name: '',
                 project_description: '',
                 client_name: '',
@@ -51000,7 +51001,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             var self = this;
             var form = document.getElementById('projectForm');
             var form_data = new FormData(form);
-            var url = this.form.id !== 0 ? '/api/project_status' : '/api/create_project';
+            var url = this.form.id !== 0 ? '/api/update_project' : '/api/create_project';
             axios.post(url, form_data).then(function (response) {
                 self.$toaster.success(response.data.message);
                 self.$refs.table.refresh();
@@ -51191,26 +51192,28 @@ var render = function() {
                     on: { submit: _vm.onSubmit, reset: _vm.onReset }
                   },
                   [
-                    _c("input", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.form.id,
-                          expression: "form.id"
-                        }
-                      ],
-                      attrs: { type: "hidden", name: "id" },
-                      domProps: { value: _vm.form.id },
-                      on: {
-                        input: function($event) {
-                          if ($event.target.composing) {
-                            return
+                    _vm.form.id != 0
+                      ? _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.form.id,
+                              expression: "form.id"
+                            }
+                          ],
+                          attrs: { type: "hidden", name: "id" },
+                          domProps: { value: _vm.form.id },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(_vm.form, "id", $event.target.value)
+                            }
                           }
-                          _vm.$set(_vm.form, "id", $event.target.value)
-                        }
-                      }
-                    }),
+                        })
+                      : _vm._e(),
                     _vm._v(" "),
                     _c(
                       "b-row",
@@ -51460,7 +51463,7 @@ var render = function() {
                                 _c(
                                   "b-form-radio-group",
                                   {
-                                    attrs: { name: "status" },
+                                    attrs: { name: "project_status" },
                                     model: {
                                       value: _vm.form.project_status,
                                       callback: function($$v) {
