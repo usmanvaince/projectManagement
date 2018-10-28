@@ -1,0 +1,143 @@
+@import url(https://fonts.googleapis.com/css?family=Nunito);@import url(http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css);@import url(http://fonts.googleapis.com/css?family=Roboto:400,700,300);.center {
+  text-align: center;
+}
+
+.align_left {
+  text-align: left;
+}
+
+.mt-1 {
+  margin-top: 1rem;
+}
+
+.btn_filter {
+  margin-top: 24px;
+}
+
+.top_nav_logo img {
+  margin: 15px 0 0 55px;
+}
+
+.card .body {
+  position: relative;
+  height: 40px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -ms-flex-line-pack: justify;
+      align-content: space-between;
+}
+
+.disable {
+  background-color: gainsboro !important;
+}
+
+.card .body .thermo-icon {
+  width: 24px;
+  height: 40px;
+  margin: 3px 0 0 0;
+}
+
+.f-temprature {
+  margin: 11px 0 0 5px;
+  font-size: 28px;
+}
+
+.f-temprature sup {
+  font-size: 15px;
+}
+
+.c-temprature {
+  font-size: 18px;
+  margin-top: 27px;
+}
+
+.water-drop {
+  width: 25px;
+  height: 44px;
+  margin: 2px 3px 0 8px;
+}
+
+.humidity {
+  font-size: 28px;
+  margin: 10px 0 0 0;
+}
+
+sup {
+  top: -0.9em;
+}
+
+.f-temprature sup {
+  top: -1.2em;
+}
+
+.card {
+  display: block;
+  color: black;
+  text-decoration: none;
+  position: relative;
+}
+
+.card:hover {
+  text-decoration: none;
+  color: black;
+}
+
+.tag_id {
+  position: absolute;
+  right: 2px;
+  font-size: 12px;
+  top: 2px;
+}
+
+.card .footer {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  color: white;
+  font-size: 12px;
+}
+
+.card .footer .signal {
+  width: 10px;
+  height: 10px;
+  margin-left: 3px;
+}
+
+.card .footer .voltage {
+  width: 15px;
+  height: 15px;
+  margin-left: 5px;
+}
+
+.navbar {
+  height: 60px !important;
+  background-color: rgba(255, 255, 255, 0.96) !important;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1) !important;
+}
+
+.main-panel {
+  background-color: #F7F7F8;
+}
+
+.main-panel .container-fluid {
+  background-color: white;
+}
+
+.navbar-laravel {
+  background-color: #fff;
+  -webkit-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+}
+
