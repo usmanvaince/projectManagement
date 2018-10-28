@@ -20,7 +20,7 @@
                     </b-button>
                 </template>
                 <template slot="id" slot-scope="row">
-                    <b-button size="sm" variant="primary">
+                    <b-button size="sm" variant="primary" @click="editProject(row.item.id)">
                         View Project
                     </b-button>
                             |
@@ -31,10 +31,10 @@
                 </template>
             </b-table>
 
-            <b-modal id="createProject" size="lg" title="Bootstrap-Vue">
+            <b-modal id="createProject" size="lg" ref="projectModel" title="Create Project">
 
                 <b-form id="projectForm" @submit="onSubmit" @reset="onReset" v-if="show">
-
+                   <input type="hidden" name="id" v-model="form.id" />
                     <b-row>
 
                         <b-col sm="6">
@@ -86,7 +86,7 @@
                             </b-form-group>
                         </b-col>
 
-                        <b-col sm="6">
+                        <b-col sm="12">
                             <b-form-group label="Project Category">
                                 <b-form-select :options="category"
                                                name="category"
@@ -96,9 +96,28 @@
                             </b-form-group>
                         </b-col>
 
+                        <b-col sm="6">
+                            <b-form-group label="Project Start Date">
+                                <b-form-input  type="date"
+                                               v-model="form.start_date"
+                                               name="start_date">
+                                </b-form-input>
+                            </b-form-group>
+                        </b-col>
+
+                        <b-col sm="6">
+                            <b-form-group label="Project End Date">
+                                <b-form-input  type="date"
+                                               v-model="form.end_date"
+                                               name="end_date">
+                                </b-form-input>
+                            </b-form-group>
+                        </b-col>
+
                         <b-col sm="12">
                             <b-form-group label="Project Description:">
                                 <b-form-textarea v-model="form.project_description"
+                                                 rows="3"
                                                  required
                                                  name="project_description"
                                                  placeholder="Enter Project Description">
@@ -106,14 +125,14 @@
                             </b-form-group>
                         </b-col>
 
+
+
                         <b-col sm="6">
-                            <b-form-group>
-                                <b-form-group label="Project Status">
-                                    <b-form-radio-group name="status" v-model="form.project_status" >
-                                        <b-form-radio value="active">Active</b-form-radio>
-                                        <b-form-radio value="inactive">InActive</b-form-radio>
-                                    </b-form-radio-group>
-                                </b-form-group>
+                            <b-form-group label="Project Status">
+                                <b-form-radio-group name="status" v-model="form.project_status" >
+                                    <b-form-radio value="active">Active</b-form-radio>
+                                    <b-form-radio value="inactive">InActive</b-form-radio>
+                                </b-form-radio-group>
                             </b-form-group>
                         </b-col>
 
@@ -131,8 +150,6 @@
 </template>
 
 <script>
-
-
     export default {
         data() {
             return  {
@@ -151,6 +168,8 @@
                     client_name: '',
                     manager_name:'',
                     budget: 0,
+                    start_date:'',
+                    end_date:'',
                     category: null,
                     status: 'active'
                 },
@@ -158,7 +177,10 @@
                 form_type: 'add',
                 category: [
                     { text: 'Select One', value: null },
-                    'Carrots', 'Beans', 'Tomatoes', 'Corn'
+                    { text: 'Information Technology', value:'IT'},
+                    { text: 'Database Management System', value:'DB'},
+                    { text: 'SEO', value:'seo'},
+
                 ],
                 show: true,
                 isBusy: false
@@ -180,21 +202,27 @@
                 let self = this;
                 let form = document.getElementById('projectForm');
                 const form_data = new FormData(form);
-                axios.post('/api/create_project', form_data).then(function (response) {
+                const url = this.form.id === 0 ? '/api/create_project' : '/api/update_project';
+                axios.post(url, form_data).then(function (response) {
                     self.$toaster.success(response.data.message);
                     self.$refs.table.refresh();
+                    self.$refs.projectModel.hide();
+                    self.onReset(evt);
                 })
                 .catch(function (error) {
+                    self.$refs.projectModel.hide();
                     self.$toaster.error('There is some error')
                 });
             },
             onReset (evt) {
                 evt.preventDefault();
                 /* Reset our form values */
-                this.form.email = '';
-                this.form.name = '';
-                this.form.food = null;
-                this.form.checked = [];
+                this.form.id = 0;
+                this.form.client_name= '';
+                this.form.manager_name = '';
+                this.form.category = null;
+                this.form.start_date = '';
+                this.form.end_date = '';
                 this.show = false;
                 this.$nextTick(() => { this.show = true });
             },
@@ -213,6 +241,16 @@
                     });
 
             },
+            editProject(project_id) {
+                const self = this;
+                axios.get('/api/get/project?id='+project_id, {
+                }).then(function (response) {
+                    self.form = response.data;
+                    self.$refs.projectModel.show();
+                }.bind(this)).catch(function(error) {
+                    self.$toaster.error('There is some error');
+                });
+            },
             validateProjectName() {
                 axios.put('/api/validate/project_name', {
                     project_name : this.form.project_name
@@ -230,7 +268,8 @@
               if (this.form_type === 'add') {
                   this.validateProjectName();
               }
-           }
+           },
           }
     }
 </script>
+

@@ -50941,7 +50941,25 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -50953,12 +50971,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 client_name: '',
                 manager_name: '',
                 budget: 0,
+                start_date: '',
+                end_date: '',
                 category: null,
                 status: 'active'
             },
             error: '',
             form_type: 'add',
-            category: [{ text: 'Select One', value: null }, 'Carrots', 'Beans', 'Tomatoes', 'Corn'],
+            category: [{ text: 'Select One', value: null }, { text: 'Information Technology', value: 'IT' }, { text: 'Database Management System', value: 'DB' }, { text: 'SEO', value: 'seo' }],
             show: true,
             isBusy: false
         };
@@ -50980,10 +51000,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             var self = this;
             var form = document.getElementById('projectForm');
             var form_data = new FormData(form);
-            axios.post('/api/create_project', form_data).then(function (response) {
+            var url = this.form.id === 0 ? '/api/create_project' : '/api/update_project';
+            axios.post(url, form_data).then(function (response) {
                 self.$toaster.success(response.data.message);
                 self.$refs.table.refresh();
+                self.$refs.projectModel.hide();
+                self.onReset(evt);
             }).catch(function (error) {
+                self.$refs.projectModel.hide();
                 self.$toaster.error('There is some error');
             });
         },
@@ -50992,10 +51016,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
             evt.preventDefault();
             /* Reset our form values */
-            this.form.email = '';
-            this.form.name = '';
-            this.form.food = null;
-            this.form.checked = [];
+            this.form.id = 0;
+            this.form.client_name = '';
+            this.form.manager_name = '';
+            this.form.category = null;
+            this.form.start_date = '';
+            this.form.end_date = '';
             this.show = false;
             this.$nextTick(function () {
                 _this.show = true;
@@ -51012,6 +51038,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 });
             }).catch(function () {
                 console.log('Clicked on cancel');
+            });
+        },
+        editProject: function editProject(project_id) {
+            var self = this;
+            axios.get('/api/get/project?id=' + project_id, {}).then(function (response) {
+                self.form = response.data;
+                self.$refs.projectModel.show();
+            }.bind(this)).catch(function (error) {
+                self.$toaster.error('There is some error');
             });
         },
         validateProjectName: function validateProjectName() {
@@ -51072,7 +51107,14 @@ var render = function() {
                   return [
                     _c(
                       "b-button",
-                      { attrs: { size: "sm", variant: "primary" } },
+                      {
+                        attrs: { size: "sm", variant: "primary" },
+                        on: {
+                          click: function($event) {
+                            _vm.editProject(row.item.id)
+                          }
+                        }
+                      },
                       [
                         _vm._v(
                           "\n                    View Project\n                "
@@ -51136,7 +51178,8 @@ var render = function() {
         _c(
           "b-modal",
           {
-            attrs: { id: "createProject", size: "lg", title: "Bootstrap-Vue" }
+            ref: "projectModel",
+            attrs: { id: "createProject", size: "lg", title: "Create Project" }
           },
           [
             _vm.show
@@ -51147,6 +51190,27 @@ var render = function() {
                     on: { submit: _vm.onSubmit, reset: _vm.onReset }
                   },
                   [
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.form.id,
+                          expression: "form.id"
+                        }
+                      ],
+                      attrs: { type: "hidden", name: "id" },
+                      domProps: { value: _vm.form.id },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(_vm.form, "id", $event.target.value)
+                        }
+                      }
+                    }),
+                    _vm._v(" "),
                     _c(
                       "b-row",
                       [
@@ -51273,7 +51337,7 @@ var render = function() {
                         _vm._v(" "),
                         _c(
                           "b-col",
-                          { attrs: { sm: "6" } },
+                          { attrs: { sm: "12" } },
                           [
                             _c(
                               "b-form-group",
@@ -51302,6 +51366,56 @@ var render = function() {
                         _vm._v(" "),
                         _c(
                           "b-col",
+                          { attrs: { sm: "6" } },
+                          [
+                            _c(
+                              "b-form-group",
+                              { attrs: { label: "Project Start Date" } },
+                              [
+                                _c("b-form-input", {
+                                  attrs: { type: "date", name: "start_date" },
+                                  model: {
+                                    value: _vm.form.start_date,
+                                    callback: function($$v) {
+                                      _vm.$set(_vm.form, "start_date", $$v)
+                                    },
+                                    expression: "form.start_date"
+                                  }
+                                })
+                              ],
+                              1
+                            )
+                          ],
+                          1
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "b-col",
+                          { attrs: { sm: "6" } },
+                          [
+                            _c(
+                              "b-form-group",
+                              { attrs: { label: "Project End Date" } },
+                              [
+                                _c("b-form-input", {
+                                  attrs: { type: "date", name: "end_date" },
+                                  model: {
+                                    value: _vm.form.end_date,
+                                    callback: function($$v) {
+                                      _vm.$set(_vm.form, "end_date", $$v)
+                                    },
+                                    expression: "form.end_date"
+                                  }
+                                })
+                              ],
+                              1
+                            )
+                          ],
+                          1
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "b-col",
                           { attrs: { sm: "12" } },
                           [
                             _c(
@@ -51310,6 +51424,7 @@ var render = function() {
                               [
                                 _c("b-form-textarea", {
                                   attrs: {
+                                    rows: "3",
                                     required: "",
                                     name: "project_description",
                                     placeholder: "Enter Project Description"
@@ -51339,41 +51454,35 @@ var render = function() {
                           [
                             _c(
                               "b-form-group",
+                              { attrs: { label: "Project Status" } },
                               [
                                 _c(
-                                  "b-form-group",
-                                  { attrs: { label: "Project Status" } },
+                                  "b-form-radio-group",
+                                  {
+                                    attrs: { name: "status" },
+                                    model: {
+                                      value: _vm.form.project_status,
+                                      callback: function($$v) {
+                                        _vm.$set(
+                                          _vm.form,
+                                          "project_status",
+                                          $$v
+                                        )
+                                      },
+                                      expression: "form.project_status"
+                                    }
+                                  },
                                   [
                                     _c(
-                                      "b-form-radio-group",
-                                      {
-                                        attrs: { name: "status" },
-                                        model: {
-                                          value: _vm.form.project_status,
-                                          callback: function($$v) {
-                                            _vm.$set(
-                                              _vm.form,
-                                              "project_status",
-                                              $$v
-                                            )
-                                          },
-                                          expression: "form.project_status"
-                                        }
-                                      },
-                                      [
-                                        _c(
-                                          "b-form-radio",
-                                          { attrs: { value: "active" } },
-                                          [_vm._v("Active")]
-                                        ),
-                                        _vm._v(" "),
-                                        _c(
-                                          "b-form-radio",
-                                          { attrs: { value: "inactive" } },
-                                          [_vm._v("InActive")]
-                                        )
-                                      ],
-                                      1
+                                      "b-form-radio",
+                                      { attrs: { value: "active" } },
+                                      [_vm._v("Active")]
+                                    ),
+                                    _vm._v(" "),
+                                    _c(
+                                      "b-form-radio",
+                                      { attrs: { value: "inactive" } },
+                                      [_vm._v("InActive")]
                                     )
                                   ],
                                   1

@@ -13,10 +13,17 @@ class ApiController extends Controller
         $this->model = new Project();
     }
     function getProjects() {
-        return Project::all();
+        return $this->model->getAll();
     }
-    function createProject(CreateProject $request) {
+    function create() {
         return $this->model->create();
+    }
+    function store(){
+        return $this->model->update();
+    }
+
+    function get() {
+        return $this->model->getProject();
     }
 
     function delete() {

@@ -22,7 +22,7 @@ class CreateProjectTable extends Migration
             $table->string('category')->default('');
             $table->dateTime('start_date')->nullable();
             $table->dateTime('end_date')->nullable();
-            $table->string('status')->default('');
+            $table->string('project_status')->default('');
             $table->text('project_description')->nullable();
             $table->timestamps();
         });

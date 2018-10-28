@@ -15,11 +15,15 @@ use Illuminate\Http\Request;
 
 Route::get('/projects','ApiController@getProjects');
 
-Route::post('/create_project','ApiController@createProject');
+Route::post('/create_project','ApiController@create');
+
+Route::post('/update_project','ApiController@store');
 
 Route::put('/validate/project_name','ApiController@validateProjectName');
 
 Route::delete('/delete/project','ApiController@delete');
+
+Route::get('/get/project','ApiController@get');
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
