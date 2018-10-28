@@ -171,7 +171,7 @@
                     start_date:'',
                     end_date:'',
                     category: null,
-                    status: 'active'
+                    project_status: 'active'
                 },
                 error: '',
                 form_type: 'add',
@@ -202,7 +202,7 @@
                 let self = this;
                 let form = document.getElementById('projectForm');
                 const form_data = new FormData(form);
-                const url = this.form.id === 0 ? '/api/create_project' : '/api/update_project';
+                const url = this.form.id !== 0 ? '/api/project_status' : '/api/create_project';
                 axios.post(url, form_data).then(function (response) {
                     self.$toaster.success(response.data.message);
                     self.$refs.table.refresh();
@@ -223,6 +223,7 @@
                 this.form.category = null;
                 this.form.start_date = '';
                 this.form.end_date = '';
+                this.form.project_status = 'active';
                 this.show = false;
                 this.$nextTick(() => { this.show = true });
             },

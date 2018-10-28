@@ -50974,7 +50974,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 start_date: '',
                 end_date: '',
                 category: null,
-                status: 'active'
+                project_status: 'active'
             },
             error: '',
             form_type: 'add',
@@ -51000,7 +51000,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             var self = this;
             var form = document.getElementById('projectForm');
             var form_data = new FormData(form);
-            var url = this.form.id === 0 ? '/api/create_project' : '/api/update_project';
+            var url = this.form.id !== 0 ? '/api/project_status' : '/api/create_project';
             axios.post(url, form_data).then(function (response) {
                 self.$toaster.success(response.data.message);
                 self.$refs.table.refresh();
@@ -51022,6 +51022,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.form.category = null;
             this.form.start_date = '';
             this.form.end_date = '';
+            this.form.project_status = 'active';
             this.show = false;
             this.$nextTick(function () {
                 _this.show = true;
