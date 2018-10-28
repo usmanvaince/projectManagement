@@ -13944,7 +13944,7 @@ Vue.use(__WEBPACK_IMPORTED_MODULE_7_v_toaster___default.a, { timeout: 3000 });
 var router = new __WEBPACK_IMPORTED_MODULE_0_vue_router__["a" /* default */]({
     mode: 'history',
     routes: [{
-        path: '/',
+        path: '/home',
         name: 'home',
         component: __WEBPACK_IMPORTED_MODULE_10__components_home_vue___default.a
     }]

@@ -11,4 +11,9 @@
 |
 */
 
-Route::get('/{any}', 'HomeController@index')->where('any', '.*');
+
+
+Auth::routes();
+Route::get('logout', 'HomeController@logout');
+Route::get('/home', 'HomeController@index');
+
